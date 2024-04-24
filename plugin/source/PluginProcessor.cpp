@@ -2,17 +2,48 @@
 #include "source/PluginEditor.h"
 
 namespace audio_plugin {
-PluginProcessor::PluginProcessor()
-    : AudioProcessor(
-          BusesProperties()
-#if !JucePlugin_IsMidiEffect
-#if !JucePlugin_IsSynth
-              .withInput("Input", juce::AudioChannelSet::stereo(), true)
-#endif
-              .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-#endif
-      ) {
-}
+
+juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParameterLayout()
+    {
+        juce::AudioProcessorValueTreeState::ParameterLayout layout;
+        layout.add (std::make_unique<juce::AudioParameterFloat> (
+            /*parameterID=*/juce::ParameterID (PARAM_IDS[kInGainParamIdx], /*versionHint=*/kInGainParamIdx + 1),
+            /*parameterName=*/PARAM_IDS[kInGainParamIdx],
+            /*minValue=*/-24.f,
+            /*maxValue=*/24.f,
+            /*defaultValue=*/0.f));
+        layout.add (std::make_unique<juce::AudioParameterFloat> (
+            /*parameterID=*/juce::ParameterID (PARAM_IDS[kOutGainParamIdx], /*versionHint=*/kOutGainParamIdx + 1),
+            /*parameterName=*/PARAM_IDS[kOutGainParamIdx],
+            /*minValue=*/-24.f,
+            /*maxValue=*/24.f,
+            /*defaultValue=*/0.f));
+
+        juce::StringArray saturation_names;
+        //for (const auto name : Distortion::kSaturationTypeNames)
+        //{
+        //    saturation_names.add (name);
+        //}
+
+        layout.add (std::make_unique<juce::AudioParameterChoice> (
+            juce::ParameterID (PARAM_IDS[kSaturationTypeParamIdx], kSaturationTypeParamIdx + 1),
+            PARAM_IDS[kSaturationTypeParamIdx],
+            saturation_names,
+            /*defaultValue=*/0));
+        return layout;
+    }
+
+    PluginProcessor::PluginProcessor()
+        : AudioProcessor (BusesProperties()
+                              .withInput ("Input", juce::AudioChannelSet::stereo(), true)
+                              .withOutput ("Output", juce::AudioChannelSet::stereo(), true)),
+          apvts (
+              /*processorToConnectTo=*/*this,
+              /*undoManagerToUse=*/nullptr,
+              /*valueTreeType=*/"PARAMETERS",
+              createParameterLayout())
+    {
+    }
 
 PluginProcessor::~PluginProcessor() {}
 
@@ -21,11 +52,7 @@ const juce::String PluginProcessor::getName() const {
 }
 
 bool PluginProcessor::acceptsMidi() const {
-#if JucePlugin_WantsMidiInput
-  return true;
-#else
   return false;
-#endif
 }
 
 bool PluginProcessor::producesMidi() const {

@@ -44,6 +44,10 @@ target_link_libraries(${PROJECT_NAME}
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
+target_link_options(${PROJECT_NAME}
+    PUBLIC
+        -Wl,-weak_reference_mismatches,weak
+)
 
 # These definitions are recommended by JUCE.
 target_compile_definitions(${PROJECT_NAME}

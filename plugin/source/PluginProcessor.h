@@ -5,6 +5,14 @@
 namespace audio_plugin {
 class PluginProcessor : public juce::AudioProcessor {
 public:
+
+    static constexpr std::array<const char*, 3> PARAM_IDS = { "InGain", "OutGain", "SaturationType" };
+    enum ParameterKeys {
+        kInGainParamIdx,
+        kOutGainParamIdx,
+        kSaturationTypeParamIdx,
+    };
+
   PluginProcessor();
   ~PluginProcessor() override;
 
@@ -35,7 +43,14 @@ public:
   void getStateInformation(juce::MemoryBlock &destData) override;
   void setStateInformation(const void *data, int sizeInBytes) override;
 
-private:
+  juce::AudioProcessorValueTreeState &getApvtsRef() {
+      return this->apvts;
+  }
+
+private:        
+  juce::AudioProcessorValueTreeState apvts;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginProcessor)
+
+  static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 };
 } // namespace audio_plugin
