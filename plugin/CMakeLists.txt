@@ -24,14 +24,14 @@ target_sources(${PROJECT_NAME}
     PRIVATE
         source/PluginEditor.cpp
         source/PluginProcessor.cpp
-        ${INCLUDE_DIR}/PluginEditor.h
-        ${INCLUDE_DIR}/PluginProcessor.h
+        source/PluginEditor.h
+        source/PluginProcessor.h
 )
 
 # Sets the include directories of the plugin project.
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 # Links to all necessary dependencies. The present ones are recommended by JUCE.
