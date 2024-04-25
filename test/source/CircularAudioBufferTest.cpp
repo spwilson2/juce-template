@@ -21,6 +21,18 @@ TEST(CircularAudioBuffer, OverBoundCopy) {
   EXPECT_EQ(srcBuffer[2], buf.getSample(/*channel=*/0, /*sample=*/1));
 }
 
+TEST(CircularAudioBuffer, WriteIndexInBoundCopy) {
+  CircularAudioBuffer buf(/*channels=*/1,  /*samples=*/10);
+  float srcBuffer[3] = {2,8,1};
+  EXPECT_EQ(buf.copyFrom(/*destChannel=*/0, /*destStartSample=*/4, srcBuffer, /*numSamples=*/3), 7);
+}
+
+TEST(CircularAudioBuffer, WriteIndexOverBoundCopy) {
+  CircularAudioBuffer buf(/*channels=*/1,  /*samples=*/10);
+  float srcBuffer[3] = {2,8,1};
+  EXPECT_EQ(buf.copyFrom(/*destChannel=*/0, /*destStartSample=*/9, srcBuffer, /*numSamples=*/3), 2);
+}
+
 TEST(CircularAudioBuffer, ReadPointersBounds) {
   CircularAudioBuffer buf(/*channels=*/1,  /*samples=*/10);
   CircularAudioBufferReadPointer pointers[2];

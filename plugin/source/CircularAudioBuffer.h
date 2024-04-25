@@ -8,6 +8,11 @@ struct CircularAudioBufferReadPointer {
 
 class CircularAudioBuffer {
   public:
+  CircularAudioBuffer():
+    delayBuffer_(),
+    size_(0)
+   { }
+
   CircularAudioBuffer(int numChannelsToAllocate, int numSamplesToAllocate):
     delayBuffer_(numChannelsToAllocate, numSamplesToAllocate),
     size_(numSamplesToAllocate)
@@ -28,7 +33,7 @@ class CircularAudioBuffer {
     pointers[1].size = sampleIndex;
   }
 
-  void copyFrom(int destChannel, int destStartSample, const float *source, int numSamples) {
+  int copyFrom(int destChannel, int destStartSample, const float *source, int numSamples) {
 
     // We should never attempt to write more than the buffer or start outside
     // the buffer, but writing over the edge is handled.
@@ -50,6 +55,9 @@ class CircularAudioBuffer {
     }
 
     delayBuffer_.copyFrom(destChannel, destStartSample, source, samples_to_write);
+
+    // Return the next write index.
+    return destStartSample + samples_to_write;
   }
 
   void clear() {
