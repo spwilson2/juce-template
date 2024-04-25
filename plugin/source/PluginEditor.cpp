@@ -1,32 +1,39 @@
-#include "source/PluginEditor.h"
-#include "source/PluginProcessor.h"
+#include "PluginEditor.h"
+#include "PluginProcessor.h"
+#include <juce_gui_extra/juce_gui_extra.h>
 
-namespace audio_plugin {
-AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor(
-    PluginProcessor &p)
-    : AudioProcessorEditor(&p), processorRef(p) {
-  juce::ignoreUnused(processorRef);
-  // Make sure that before the constructor has finished, you've set the
-  // editor's size to whatever you need it to be.
-  setSize(400, 300);
-}
+namespace audio_plugin
+{
 
-AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor() {}
+    int kWidth = 240;
+    int kHeight = 200;
 
-void AudioPluginAudioProcessorEditor::paint(juce::Graphics &g) {
-  // (Our component is opaque, so we must completely fill the background with a
-  // solid colour)
-  g.fillAll(
-      getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+    PluginEditor::PluginEditor (PluginProcessor& p)
+        : AudioProcessorEditor (&p), processorRef (p)
+    {
+        startTimer(100);
+        setSize(kWidth, kHeight);
+    }
 
-  g.setColour(juce::Colours::white);
-  g.setFont(15.0f);
-  g.drawFittedText("Hello World!", getLocalBounds(),
-                   juce::Justification::centred, 1);
-}
 
-void AudioPluginAudioProcessorEditor::resized() {
-  // This is generally where you'll want to lay out the positions of any
-  // subcomponents in your editor..
-}
-} // namespace audio_plugin
+    PluginEditor::~PluginEditor()
+    {
+        setLookAndFeel (nullptr);
+    }
+
+    //void PluginEditor::sliderValueChanged (juce::Slider* slider) {
+    //}
+
+    void PluginEditor::paint (juce::Graphics& g)
+    {
+        g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    }
+
+    // TODO Juce linespacer class? (Draws a line for the full size?
+
+    void PluginEditor::resized()
+    {
+        repaint();
+    }
+
+} // namespace gluec

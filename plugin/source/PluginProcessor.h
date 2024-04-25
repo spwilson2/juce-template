@@ -3,15 +3,17 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 namespace audio_plugin {
+static constexpr std::array<const char*, 2> PARAM_IDS = { "InGain", "OutGain" };
+enum ParameterKeys {
+    kInGainParamIdx,
+    kOutGainParamIdx,
+    LAST
+};
+static_assert(PARAM_IDS.size() == ParameterKeys::LAST);
+
 class PluginProcessor : public juce::AudioProcessor {
 public:
 
-    static constexpr std::array<const char*, 3> PARAM_IDS = { "InGain", "OutGain", "SaturationType" };
-    enum ParameterKeys {
-        kInGainParamIdx,
-        kOutGainParamIdx,
-        kSaturationTypeParamIdx,
-    };
 
   PluginProcessor();
   ~PluginProcessor() override;

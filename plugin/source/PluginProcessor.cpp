@@ -18,18 +18,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
             /*minValue=*/-24.f,
             /*maxValue=*/24.f,
             /*defaultValue=*/0.f));
-
-        juce::StringArray saturation_names;
-        //for (const auto name : Distortion::kSaturationTypeNames)
-        //{
-        //    saturation_names.add (name);
-        //}
-
-        layout.add (std::make_unique<juce::AudioParameterChoice> (
-            juce::ParameterID (PARAM_IDS[kSaturationTypeParamIdx], kSaturationTypeParamIdx + 1),
-            PARAM_IDS[kSaturationTypeParamIdx],
-            saturation_names,
-            /*defaultValue=*/0));
         return layout;
     }
 
@@ -166,7 +154,7 @@ bool PluginProcessor::hasEditor() const {
 }
 
 juce::AudioProcessorEditor *PluginProcessor::createEditor() {
-  return new AudioPluginAudioProcessorEditor(*this);
+  return new PluginEditor(*this);
 }
 
 void PluginProcessor::getStateInformation(
