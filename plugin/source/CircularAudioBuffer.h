@@ -57,14 +57,19 @@ class CircularAudioBuffer {
     delayBuffer_.copyFrom(destChannel, destStartSample, source, samples_to_write);
 
     // Return the next write index.
-    return destStartSample + samples_to_write;
+    int next_sample = destStartSample + samples_to_write;
+    return next_sample == size_ ? 0 : next_sample;
   }
 
   void clear() {
     delayBuffer_.clear();
   }
 
+  int size() {
+    return size_;
+  }
+
   private:
-    juce::AudioBuffer<float> delayBuffer_;
     int size_;
+    juce::AudioBuffer<float> delayBuffer_;
 };
