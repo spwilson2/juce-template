@@ -1,15 +1,19 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include "GrainDelayProcessor.h"
 
 namespace audio_plugin {
-static constexpr std::array<const char*, 2> PARAM_IDS = { "InGain", "OutGain" };
-enum ParameterKeys {
-    kInGainParamIdx,
-    kOutGainParamIdx,
+static constexpr std::array<const char*, 5> PARAM_IDS = { "Spread", "Pitch", "Pitch Rand", "Frequency", "Mix" };
+enum ParameterIds {
+    kSpreadMsId,
+    kPitchId,
+    kPitchRandId,
+    kGrainFreqHzId,
+    kMixId,
     LAST
 };
-static_assert(PARAM_IDS.size() == ParameterKeys::LAST);
+static_assert(PARAM_IDS.size() == ParameterIds::LAST);
 
 class PluginProcessor : public juce::AudioProcessor {
 public:
@@ -52,6 +56,8 @@ public:
 private:        
   juce::AudioProcessorValueTreeState apvts;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginProcessor)
+
+  GrainDelayProcessor grainDelay_;
 
   static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 };
