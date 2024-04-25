@@ -26,6 +26,8 @@ target_sources(${PROJECT_NAME}
         source/PluginProcessor.cpp
         source/PluginEditor.h
         source/PluginProcessor.h
+        #source/GrainDelayProcessor.h
+        source/CircularAudioBuffer.h
 )
 
 # Sets the include directories of the plugin project.

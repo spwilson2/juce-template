@@ -7,7 +7,9 @@ enable_testing()
 
 # Creates the test console application.
 add_executable(${PROJECT_NAME}
-    source/AudioProcessorTest.cpp)
+    source/AudioProcessorTest.cpp
+    source/CircularAudioBufferTest.cpp
+    )
 
 # Sets the necessary include directories: ours, JUCE's, and googletest's.
 target_include_directories(${PROJECT_NAME}
